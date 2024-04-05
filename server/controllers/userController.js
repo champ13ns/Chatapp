@@ -5,10 +5,16 @@ import generateToken from "../utils/generateToken.js";
 const app = express();
 
 export async function Login(req, res) {
+  console.log(req.body)
     const { email, password } = req.body;
+    if(email == null || password == null){
+      return res.status(422).json({
+        message : "Wrong Input"
+      })
+    }
     const User = await UserModel.findOne({ email });
     console.log("user is ", User);
-    if(User === undefined) {
+    if(User === undefined || User == null) {
       return res.status(401).json({
         message : "User not yet registered"
       })

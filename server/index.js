@@ -4,6 +4,7 @@ import userRoutes from './routes/userRoutes.js'
 import chatRoutes from './routes/chatRoutes.js'
 import jwt from 'jsonwebtoken'
 import { connectDB } from "./utils/db.js";
+import cors from 'cors'
 
 /**
  * /api/users/login -> body{email, password}
@@ -13,6 +14,7 @@ import { connectDB } from "./utils/db.js";
 connectDB();
 
 const app = express();
+app.use(cors())
 
 app.listen(5000, ()=> {
     console.log('server started at port 5000')

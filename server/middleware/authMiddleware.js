@@ -8,9 +8,10 @@ console.log(process.env.PRIVATE_KEY);
 
 export const protect = async function (req, res, next) {
   try {
+    console.log("start")
     console.log(req.headers.authorization);
     console.log(req.headers.authorization.startsWith("Bearer"));
-    const x = req.headers.authorization && req.headers.authorization.startsWith("Bearer");
+    const x = req.headers.Authorization && req.headers.Authorization.startsWith("Bearer");
     console.log(x)
     if (req.headers.authorization) {
       console.log("inside ");
