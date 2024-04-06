@@ -70,7 +70,7 @@ const Login = () => {
         </Button>
         <Button marginTop="4px" w="100%" type="password" isLoading={loading}  colorScheme="green" onClick={()=> {
           setLoading(true)
-          setEmail('a@a.com')
+          setEmail('agasdf@guest.com')
            setPassword('12345678')
            setLoading(false)
         }} >

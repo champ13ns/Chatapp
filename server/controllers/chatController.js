@@ -6,7 +6,8 @@ import { UserModel } from '../models/UserModel.js';
 // /api/chats/ (GET) -> get all the chats belonging to the logged In user.
 
 export const accessChat = async function(req,res){
-    const userId = req.body.userId;
+    const userId = req.params.id;
+    console.log("parms is ",userId)
     if(!userId) {
         res.json({
             message : "User id not present"
@@ -48,8 +49,9 @@ export const fetchChat = async function(req,res){
         const userId = req.user._id;
         const allChats = await chatModel.find({
             users : {$elemMatch : {$eq : userId}  }
-        })
-        console.log(allChats);
+        }).populate("users","-password").populate("groupAdmin","-password").populate("latestMessage").sort({updatedAt : -1})
+        
+        console.log(allChats)
         res.status(200).json({
             allChats
         })

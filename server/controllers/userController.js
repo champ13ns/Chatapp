@@ -49,6 +49,7 @@ export async function signUp(req, res) {
       });
       return;
     }
+    
     const newUser = await UserModel.create({
       email,
       password,

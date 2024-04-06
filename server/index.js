@@ -13,7 +13,7 @@ import cors from 'cors'
 
 connectDB();
 
-const app = express();
+const app = express();  
 app.use(cors())
 
 app.listen(5000, ()=> {
@@ -21,7 +21,6 @@ app.listen(5000, ()=> {
 }
 )
 
-console.log(jwt.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MGQzYTA3ZWFhNGQ3NTUxYmJhYTQxYSIsImlhdCI6MTcxMjE2NzEzNn0.igAk6kGu-fN4MCoeGGyRfecaEKOOFa9kyCjcBAN1YSw" , "random1234"))
 
 app.use(express.json())
 app.use("/api/users", userRoutes);

@@ -10,11 +10,9 @@ import { ChatProvider } from './Context/ChatProvider.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <ChakraProvider>
     <ChatProvider>
       <App  />
     </ChatProvider>
     </ChakraProvider>
-  </React.StrictMode>,
 )

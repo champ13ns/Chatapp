@@ -6,6 +6,6 @@ const app = express();
 
 const router = express.Router();
 
-router.post('/' , protect , accessChat)
-router.get('/',protect , fetchChat)
+router.post('/:id' , protect , accessChat)
+router.get('/' , protect ,  fetchChat)
 export default router;

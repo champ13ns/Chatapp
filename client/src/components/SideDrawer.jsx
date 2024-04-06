@@ -17,24 +17,23 @@ import {
   Input,
   Toast,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { SearchIcon, BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
-import { ChatContext , ChatState } from "../Context/ChatProvider";
+import { ChatContext, ChatState } from "../Context/ChatProvider";
 import ChatLoading from "./ChatLoading";
 import UserListItem from "./UserListItem";
 
 const SideDrawer = () => {
   const toast = useToast();
-  const {user} = ChatState();
-  console.log("Global state user is ",user)
+  const { user, setUser, selectedChat, setSelectedChat, chats, setChats } =
+    ChatState();
   let x;
-  if(user.length != 0){
-       x = JSON.parse(user);
-      console.log(x.token)
-
+  if (user.length != 0) {
+    x = JSON.parse(user);
   }
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -42,13 +41,41 @@ const SideDrawer = () => {
   const [searchRes, setSearchRes] = useState("");
   const [loadingChat, setLoadingChat] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const logOutHandler = function () {
     localStorage.removeItem("userInfo");
     navigate("/");
   };
 
-  function accessChat(id){
+  async function accessChat(id) {
+    try {
+      setLoadingChat(true);
+      const res = await fetch(`http://localhost:5000/api/chats/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${x.token}`,
+        },
+      });
 
+      setLoadingChat(true);
+      if (res.status === 200) {
+        const chatjsonRes = await res.json();
+        console.log(chatjsonRes);
+        // if( chats &&  !chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+        setSelectedChat(chatjsonRes);
+        setLoadingChat(false);
+        onClose();
+      }
+    } catch (err) {
+      toast({
+        title: "Cannot set chat",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-left",
+      });
+    }
   }
 
   async function handleSearch() {
@@ -67,25 +94,25 @@ const SideDrawer = () => {
         `http://localhost:5000/api/users?search=${search}`,
         {
           headers: {
-            "Authorization": `Bearer ${x.token}`,  
+            Authorization: `Bearer ${x.token}`,
             "Content-type": "application/json",
           },
         }
       );
       if (res.status == 200) {
         const resJson = await res.json();
-        setSearchRes(resJson)
+        setSearchRes(resJson.users);
       }
       setLoading(false);
     } catch (err) {
-        console.log(err)
-        toast({
-            status : "error",
-            title : "Something wrrong happened",
-            isClosable : true,
-            position : "bottom-left",
-            duration : 4000
-        })
+      console.log(err);
+      toast({
+        status: "error",
+        title: "Something wrrong happened",
+        isClosable: true,
+        position: "bottom-left",
+        duration: 4000,
+      });
     }
   }
   return (
@@ -136,23 +163,33 @@ const SideDrawer = () => {
           <DrawerBody>
             <Box display={"flex"} pb={2}>
               <Input
+                mr={2}
                 placeholder="Search by email or username"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <Button onClick={handleSearch}>Go</Button>
-            
+              <Button isLoading={loading} onClick={handleSearch}>
+                Go
+              </Button>
             </Box>
-            {
-                loading ? (
-                    <ChatLoading />
-                ) : (
-                    <span>Processing</span>
-                    // searchRes?.map((x) => {
-                    //     <UserListItem key={x._id} user = {x} handleFunction={()=>accessChat(user._id)} />
-                    // })
-                )
-            }
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              <>
+                {searchRes &&
+                  searchRes?.map((user, index) => (
+                    <React.Fragment key={index}>
+                      <UserListItem
+                        user={user}
+                        handleFunction={() => {
+                          accessChat(user._id);
+                        }}
+                      />
+                    </React.Fragment>
+                  ))}
+              </>
+            )}
+              {loadingChat && <Spinner ml="auto" display={"flex"} />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
