@@ -11,7 +11,7 @@ const HomePage = () => {
     console.log("UE")
     const user = JSON.parse(localStorage.getItem("userInfo")) 
     console.log("user is ",user)
-    if(user) navigate('/chats');
+    if(user != undefined || user?.length > 0) navigate('/chats');
   },[navigate])
   
   return (

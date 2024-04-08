@@ -2,6 +2,9 @@ import React from 'react'
 import { Avatar, Box , Text} from '@chakra-ui/react'
 
 const UserListItem = ({user , handleFunction,  }) => {
+
+
+  console.log("UserListItem")
   return (
     <Box onClick={handleFunction} cursor={"pointer"} bg={"#E8E8E8"} w={"100%"} display={"flex"} mb={2} p={3} alignItems={"center"}  _hover={
         {

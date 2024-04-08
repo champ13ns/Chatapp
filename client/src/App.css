@@ -6,3 +6,10 @@
     background : black;
 }
 
+.App {
+    min-height: 100vh;
+    display: flex;
+    background-image: url("./assets/background.png");
+    background-position: center;
+    background-size: cover;
+  }

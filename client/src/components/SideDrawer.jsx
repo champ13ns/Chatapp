@@ -62,7 +62,7 @@ const SideDrawer = () => {
       if (res.status === 200) {
         const chatjsonRes = await res.json();
         console.log(chatjsonRes);
-        // if( chats &&  !chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+        if( chats &&  !chats.find((c) => c._id === chatjsonRes._id)) setChats([chatjsonRes, ...chats]);
         setSelectedChat(chatjsonRes);
         setLoadingChat(false);
         onClose();

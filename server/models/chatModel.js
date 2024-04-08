@@ -7,7 +7,7 @@ const chatSchema = mongoose.Schema({
     latestMessage : { type : mongoose.Schema.Types.ObjectId , ref : "Message" },
     groupAdmin : { type : mongoose.Schema.Types.ObjectId , ref : "Chat"},
     }, {
-        timestamps : true
+        timestamps : true   
     })
 
 export const chatModel = mongoose.model('Chat' , chatSchema)

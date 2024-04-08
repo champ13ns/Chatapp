@@ -20,7 +20,7 @@ export const protect = async function (req, res, next) {
       const decoded =  jwt.verify(token, process.env.PRIVATE_KEY);
       console.log("decoded token is ", decoded);
       req.user = await UserModel.findById(decoded.id).select("-password");
-      console.log(req.user)
+      // console.log(req.user)
       next();
     } else {
       return res.status(401).json({

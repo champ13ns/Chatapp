@@ -37,11 +37,12 @@ const Login = () => {
       }
     });
     const jsonRes = await res.json();
-    console.log("jsonRes is ",jsonRes)
       if(res.status == 200){
-     localStorage.setItem('userInfo',JSON.stringify(jsonRes))
+    console.log("jsonRes is ",jsonRes)
+    const savedUser =  localStorage.setItem('userInfo',JSON.stringify(jsonRes))
+    console.log("SavedUser in LocalStorage is ",localStorage.getItem('userInfo'))
       navigate('/chats');
-
+      console.log(jsonRes)
     } else{
       toast({
         title: "Wrong Credentials",
@@ -52,7 +53,6 @@ const Login = () => {
       });
     }
     setLoading(false);
-    console.log(jsonRes)
   }
   return (
     <VStack spacing={3} >
